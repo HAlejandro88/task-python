@@ -1,6 +1,4 @@
 #!/bin/python3
-import zipfile
-import os
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -9,7 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-browser = webdriver.Chrome(executable_path= r'C:\Users\alejandro.soto\Desktop\driver\chromedriver.exe')
+browser = webdriver.Chrome(executable_path= './chromedriver')
 browser.maximize_window()
 browser.get('http://www2.ssn.unam.mx:8080/catalogo/')
 
@@ -43,14 +41,18 @@ time.sleep(5)
 
 WebDriverWait(browser, 10).until(EC.frame_to_be_available_and_switch_to_it((By.CSS_SELECTOR,"iframe[name^='a-'][src^='https://www.google.com/recaptcha/api2/anchor?']")))
 WebDriverWait(browser, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="recaptcha-anchor"]/div[1]'))).click()
-#WebDriverWait(browser, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button[name="submit"]'))).click()
-time.sleep(2)
+vibility_element = WebDriverWait(browser, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[@id="inputType"]')))
+time.sleep(5)
+
 #inputElement = browser.find_element_by_id('txtFechaFin')
 # inputElement.send_keys('15/11/2018')
 # time.sleep(3)
 
 #browser.find_element_by_xpath('//*[@id="inputType"]').submit()
-browser.find_element_by_id('inputType').submit()
+if vibility_element == True:
+    browser.find_element_by_xpath('//*[@id="inputType"]').click()
+else:
+    print('no entro')
 
 # Descargar excel
 #browser.find_element_by_css_selector("button.btn btn-default.btn-action.btn-download-csv.text-uppercase")
